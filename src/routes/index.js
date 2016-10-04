@@ -39,9 +39,9 @@ router.post('/todos', (req, res) => {
   if (!req.body) return res.sendStatus(400)
   let body = {
     id: parseInt(db.get('todos').size().value()),
-    name: body.name ? body.name : 'Do something',
-    completed: body.completed ? body.completed : false,
-    due: body.due ? body.due : moment().add(7, 'd')
+    name: req.body.name ? req.body.name : 'Do something',
+    completed: req.body.completed ? req.body.completed : false,
+    due: req.body.due ? req.body.due : moment().add(7, 'd')
   }
   let todo = db.get('todos')
     .push(body)
