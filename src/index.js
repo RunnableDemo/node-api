@@ -1,36 +1,14 @@
-import http from 'http';
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import initializeDb from './db';
-import middleware from './middleware';
-import api from './api';
-import config from './config.json';
+import express from 'express'
+import bodyParser from 'body-parser'
 
-let app = express();
-app.server = http.createServer(app);
+import routes from './routes/index.js'
 
-// 3rd party middleware
-app.use(cors({
-	exposedHeaders: config.corsHeaders
-}));
+const app = express()
 
-app.use(bodyParser.json({
-	limit : config.bodyLimit
-}));
+app.use(bodyParser.json())
+app.use('/', routes)
 
-// connect to db
-initializeDb( db => {
-
-	// internal middleware
-	app.use(middleware({ config, db }));
-
-	// api router
-	app.use('/api', api({ config, db }));
-
-	app.server.listen(process.env.PORT || config.port);
-
-	console.log(`Started on port ${app.server.address().port}`);
-});
-
-export default app;
+const server = app.listen(3000, () => {
+  const {address, port} = server.address()
+  console.log(`Example app listening at http://${address}:${port}`)
+})
