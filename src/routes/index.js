@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 
 router.get('/todos', (req, res) => {
   let todos
-  if (!req.params) {
+  if (!req.params || Object.keys(req.params).length === 0) {
     todos = db.get('todos').value()
   } else {
     todos = db.get('todos')
